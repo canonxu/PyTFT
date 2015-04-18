@@ -1,0 +1,8 @@
+<<<<<<<HEAD
+*.pyc
+*xls
+*xlscx
+/.idea
+*jpg
+*png
+!Transfer.png
