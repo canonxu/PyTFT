@@ -8,5 +8,6 @@
 /O2
 /Air
 *jpg
-*png
+
 !Transfer.png
+!/examples

@@ -19,8 +19,10 @@ Until 2015/4/18, we have mainly designed 3 modules as follows. You can check the
 
 ###Py_Vth_Fit module
 - Calculate more accurate value of Vth with the method of least square.
- -----------------------------------------------
+
+ ---------------------------------------------
 
 ##License & Authors
 - **MIT**
 - **Canon XU(canonxu@sjtu.edu.cn),  Dept. EE of SJTU**
+<br/>**Tips: If you huve any questions, do not be hesitate to contact me!**
