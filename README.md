@@ -25,4 +25,4 @@ Until 2015/4/18, we have mainly designed 3 modules as follows. You can check the
 ##License & Authors
 - **MIT**
 - **Canon XU(canonxu@sjtu.edu.cn),  Dept. EE of SJTU**
-<br/>**Tips: If you huve any questions, do not be hesitate to contact me!**
+
