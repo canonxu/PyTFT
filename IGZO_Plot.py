@@ -163,7 +163,7 @@ class IGZO_SingleTrans_Plot(object):
 if __name__ == '__main__':
 
     #一族曲线测试
-     Ar_plot =  IGZO_Array_Plot('Ar_initial.xls','Ar_15min.xls','Ar_30min.xls','Ar_45min.xls')
+     Ar_plot =  IGZO_Array_Plot('Ar_initial.xls','Ar_15min.xls','Ar_30min.xls','Ar_45min.xls','Ar_60min.xls')
      Ar_plot.Trans_ArrayPlot()
      Ar_plot.VSM_ArrayPlot()
 

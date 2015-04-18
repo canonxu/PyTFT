@@ -18,7 +18,7 @@ class Vth_Fit(object):
     def Trans_Plot_Withfit(self,left= -25, right = 45, low = 1E-12, high = 1E-4):
         #实例化，获取fname的数据
         Data = Excel_Analysis(self.fname)
-        Trans_Fit = plt.figure()
+        plt.figure()
         #做出拟合前的Trans图
         x = Data.TransferExcel()[0]
         y = Data.TransferExcel()[1]
@@ -65,6 +65,7 @@ class Vth_Fit(object):
 #测试拟合结果，显示在figure中
 if __name__ == '__main__':
      fit = Vth_Fit('N2_10min.xls')
+     fit.Trans_Plot_Withfit()
      plt.show()
 
 
