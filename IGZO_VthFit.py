@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-#author ： 徐佳能, Canon Xu, a graduate student from Dept.EE of XJTU
+#author ： 徐佳能, Canon Xu, a graduate student from Dept.EE of SJTU
 #Email: canonxu@yeah.net
 #Finish Time：2015/4/18
 
 import matplotlib.pyplot as plt
-from  IGZO_Data import Excel_Analysis
+from  IGZO_Data import Data_Analysis
 import numpy as np
 from scipy import linalg
 import  math
@@ -17,7 +17,7 @@ class Vth_Fit(object):
     #做出转移特性曲线，其中曲线默认参数为坐标轴界点：left= -25, right = 45, low = 1E-12, high = 1E-4
     def Trans_Plot_Withfit(self,left= -25, right = 45, low = 1E-12, high = 1E-4):
         #实例化，获取fname的数据
-        Data = Excel_Analysis(self.fname)
+        Data = Data_Analysis(self.fname)
         plt.figure()
         #做出拟合前的Trans图
         x = Data.TransferExcel()[0]
@@ -53,7 +53,7 @@ class Vth_Fit(object):
             Fit_Vth = x__[Data.Get_Closest_Num(1E-9, y__)]
             para = Data.Extraction()
             plt.text(25, 1E-11,'Ex_Vth: '+str(para[0])+'\n'+'Fit_Vth: '+str(Fit_Vth), fontsize=18)
-
+        #
         except:
             print 'fit_start=',fit_start, 'fit_end=',fit_end
             print 'original length:',len(x_), len(y_),'fit length:', len(x__), len(y__)

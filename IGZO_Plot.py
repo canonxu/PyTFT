@@ -1,12 +1,13 @@
 # -*- coding:utf-8 -*-
-#author ： 徐佳能, Canon Xu, a graduate student from Dept.EE of XJTU
+#author ： 徐佳能, Canon Xu, a graduate student from Dept.EE of SJTU
 #Email: canonxu@yeah.net
 #Finish Time：2015/4/18
 
 import os, time
 import threading
 from multiprocessing import Process
-from IGZO_Data import Excel_Analysis
+from IGZO_Data import Data_Analysis
+from IGZO_Data import Shortstep_Data_Analysis
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -93,8 +94,8 @@ class IGZO_Array_Plot(object):
 
     #做出转移特性曲线的单个图
     def Trans_Plot(self,fname):
-        x = Excel_Analysis(fname).TransferExcel()[0]
-        y = Excel_Analysis(fname).TransferExcel()[1]
+        x = Data_Analysis(fname).TransferExcel()[0]
+        y = Data_Analysis(fname).TransferExcel()[1]
         plt.semilogy(x, y, 's-', label = (fname.split('.')[0]), lw = 3)
         plt.legend(loc = 'lower right')
         plt.axis([-25, 45, 1E-12, 1E-4])
@@ -102,16 +103,21 @@ class IGZO_Array_Plot(object):
         plt.ylabel('ID', fontsize=20)
         plt.title('Transfer Curve', fontsize=30)
 
-
-    #做出参数曲线的单个图
-    def VSM_Plot(self):
+    def Para_List(self):
         x = np.arange(0, len(self.Fname))
         y = []
         for i in np.arange(0, 3):
             y.append([])
             for j in np.arange(0, len(self.Fname)):
-                ins = Excel_Analysis(self.Fname[j])
+                ins = Data_Analysis(self.Fname[j])
                 y[i].append(ins.Extraction()[i])
+        return y
+
+
+    #做出参数曲线的单个图
+    def VSM_Plot(self):
+        x = np.arange(0, len(self.Fname))
+        y = self.Para_List()
 
         #Vth变化图
         plt.subplot(3,1,1,label ='V' )
@@ -125,6 +131,8 @@ class IGZO_Array_Plot(object):
         plt.subplot(3,1,2,label ='V' )
         plt.plot(x, y[1], 'ks-')
         plt.ylabel(u'SS')
+        ss_yticks = np.arange(0,2.25,0.25)
+        plt.yticks(ss_yticks)
         # plt.legend(labels = 'S', loc = 'upper left', handlelength=2)
         plt.xticks(x, ([]),)
 
@@ -136,7 +144,10 @@ class IGZO_Array_Plot(object):
         for i in range(0, len(self.Fname)):
             xtick_list.append(self.Fname[i].split('.')[0])
         plt.xticks(x, xtick_list, rotation = 15,)
+        # plt.yticks(np.arange(2,7))
         plt.ylabel(u'Mobility')
+
+
 
 class IGZO_SingleTrans_Plot(object):
     def __init__(self, fname):
@@ -144,9 +155,29 @@ class IGZO_SingleTrans_Plot(object):
 
     #做出转移特性曲线，其中曲线默认参数为坐标轴界点：left= -25, right = 45, low = 1E-12, high = 1E-4
     def Trans_Plot(self, left= -25, right = 45, low = 1E-12, high = 1E-4):
-        x = Excel_Analysis(self.fname).TransferExcel()[0]
-        y = Excel_Analysis(self.fname).TransferExcel()[1]
-        para = Excel_Analysis(self.fname).Extraction()
+        x = Data_Analysis(self.fname).TransferExcel()[0]
+        y = Data_Analysis(self.fname).TransferExcel()[1]
+        para = Data_Analysis(self.fname).Extraction()
+        plt.figure()
+        plt.semilogy(x, y, 's-', label = (self.fname.split('.')[0]), lw = 3)
+        plt.legend(loc = 'lower right',handlelength=4)
+        plt.axis([left, right, low, high]) # ([-25, 45, 1E-14, 1E-4])
+        plt.xlabel('VG',fontsize=20 )
+        plt.ylabel('ID', fontsize=20)
+        plt.text(20, 1E-11,'Vth: '+str(para[0])+'   '+'SS: '+str(para[1])+'\n'+'Mobility: '+str(para[2])\
+            +'\n'+'On/Off: '+str(para[3]), fontsize=14)
+        plt.grid(True)
+        plt.title('Transfer Curve', fontsize=30)
+
+class IGZO_Shortstep_SignalTrans_Plot(object):
+    def __init__(self, fname):
+        self.fname = fname
+
+    #做出转移特性曲线，其中曲线默认参数为坐标轴界点：left= -25, right = 45, low = 1E-12, high = 1E-4
+    def Trans_Plot(self, left= -25, right = 45, low = 1E-12, high = 1E-4):
+        x = Shortstep_Data_Analysis(self.fname).TransferExcel()[0]
+        y = Shortstep_Data_Analysis(self.fname).TransferExcel()[1]
+        para = Shortstep_Data_Analysis(self.fname).Extraction()
         plt.figure()
         plt.semilogy(x, y, 's-', label = (self.fname.split('.')[0]), lw = 3)
         plt.legend(loc = 'lower right',handlelength=4)
@@ -160,18 +191,49 @@ class IGZO_SingleTrans_Plot(object):
 
 
 
+
 if __name__ == '__main__':
 
-    #一族曲线测试
-     Ar_plot =  IGZO_Array_Plot('Ar_initial.xls','Ar_15min.xls','Ar_30min.xls','Ar_45min.xls','Ar_60min.xls')
-     Ar_plot.Trans_ArrayPlot()
-     Ar_plot.VSM_ArrayPlot()
+    #607实验室，0.5步进，一族曲线测试
+    gas_name1 = ''
+    # gas_name2 = 'Ar'
+    N2_plot =  IGZO_Array_Plot(gas_name1+'MidN2_initial.xls',gas_name1+'15min.xls',gas_name1+'30min.xls',\
+                            gas_name1+'45min.xls' ,gas_name1+'60min.xls',gas_name1+'75min.xls',\
+                            gas_name1+'90min.xls',gas_name1+'105min.xls',gas_name1+'120min.xls',\
+                            gas_name1+'135min.xls',gas_name1+'150min.xls')
+    # Ar_plot =  IGZO_Array_Plot(gas_name2+'_initial.xls',gas_name2+'_15min.xls',gas_name2+'_30min.xls'\
+    #                            ,gas_name2+'_45min.xls'\
+    #                             ,gas_name2+'_60min.xls',gas_name2+'_75min.xls',gas_name2+'_90min.xls')
+    # N2_plot.Trans_ArrayPlot()
+    # Ar_plot.Trans_ArrayPlot()
+    # N2_plot.VSM_ArrayPlot()
+    # Ar_plot.VSM_ArrayPlot()
 
-     #单个曲线测试
-     N2_plot = IGZO_SingleTrans_Plot('N2_10min.xls')
-     N2_plot.Trans_Plot()
 
-     plt.show()
+
+    #做Vvth对比图
+    # N2_Vth_y = N2_plot.Para_List()[0]
+    # Ar_Vth_y = Ar_plot.Para_List()[0]
+    # delta_N2 = [x-N2_Vth_y[0] for x in N2_Vth_y]
+    # delta_Ar = [x - Ar_Vth_y[0] for x in Ar_Vth_y]
+    # x = np.arange(0, len(Ar_plot.Fname))
+    # plt.plot(x,delta_N2,label = 'N2')
+    # plt.plot(x,delta_Ar,label = 'Ar')
+    # plt.legend()
+    # Comp_xtick = []
+    # for i in range(0, len(Ar_plot.Fname)):
+    #     Comp_xtick.append((Ar_plot.Fname[i].split('.')[0]).split('_')[1])
+    # plt.xticks(x, Comp_xtick)
+
+     # 607实验室，0.5步进，单个曲线测试
+    # N2_plot = IGZO_SingleTrans_Plot('N2_30min.xls')
+    # N2_plot.Trans_Plot()
+
+    #净化间4200测试数据，单个曲线作图
+    # TEST = IGZO_Shortstep_SignalTrans_Plot('4200test.xls')
+    # TEST.Trans_Plot(-25, 65, 1E-13, 1E-4)
+
+    plt.show()
 
 
 
