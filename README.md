@@ -20,6 +20,12 @@ Until 2015/4/18, we have mainly designed 3 modules as follows. You can check the
 ###Py_Vth_Fit module
 - Calculate more accurate value of Vth with the method of least square.
 
+###Py_FormationEnergy_Fit module
+- Depending on the formula, fit the experiment data to get formation energy.
+
+###Py_QT
+- Design a QT for convenient parameter test.
+
  ---------------------------------------------
 
 ##License & Authors
